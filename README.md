@@ -1,7 +1,7 @@
 # Quick Settings Avatar 
 <img src="images/avatar-quick-settings-dark.png" style="margin:0 auto;" width="300px" alt="QuickSettings-Avatar">
 
-Quick Settings Avatar is a Gnome 43+ extension that simply adds ypur user avatar in the Quick Settings panel, right in the system related settings.
+Quick Settings Avatar is a Gnome 43+ extension that simply adds your user avatar to the Quick Settings panel, next to the system related settings (either in the right or the left side).
 Inspired by the early Gnome mocks for the quick settings panel:
 https://gitlab.gnome.org/Teams/Design/os-mockups/-/blob/master/system-status/quick-settings/quick-toggles-2.png
 

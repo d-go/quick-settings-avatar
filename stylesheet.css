@@ -1,0 +1,11 @@
+.avatar-thumbnail {
+  border: none;
+  /* icon-size: 40px; */
+}
+
+.avatar-button {
+  width: 34px;
+  height: 34px;
+  padding: 0px;
+}
+

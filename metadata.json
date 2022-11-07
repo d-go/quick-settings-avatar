@@ -1,0 +1,8 @@
+{
+  "name": "User Avatar In Quick Settings",
+  "description": "Display the user avatar in the Quick Settings menu, part of the \"System\" settings",
+  "uuid": "quick-settings-avatar@d-go",
+  "shell-version": [
+    "43"
+  ]
+}

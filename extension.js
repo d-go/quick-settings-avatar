@@ -21,7 +21,7 @@ const AvatarItem = GObject.registerClass(
 
             // Create the avatar thumbnil based onthe userWidget Avatar
             const avatar = new Avatar(user, {
-                iconSize: 40,
+                iconSize: 36,
                 styleClass: 'user-icon avatar-thumbnail',
             });
 

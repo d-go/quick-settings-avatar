@@ -1,4 +1,4 @@
-# Quick Settings Avatar 
+# Quick Settings Avatar
 <img src="images/avatar-quick-settings-dark.png" style="margin:0 auto;" width="300px" alt="QuickSettings-Avatar">
 
 Quick Settings Avatar is a Gnome 43+ extension that simply adds your user avatar to the Quick Settings panel, next to the system related settings (either in the right or the left side).
@@ -22,7 +22,7 @@ I have only tested it in laptop devices, mobile and desktop might present some v
 
 ## TODO
 
-- [ ] Add support show a submenu with user related actions, such as "Log out", "Switch user", "Lock screen"(?)
+- [ ] Add support to show a submenu with user related actions, such as "Log out", "Switch user", "Lock screen"(?)
 - [ ] Add support to make the Avatar thumbnail larger
 - [ ] Add options to remove system settings toggles to better adapt it to the available space (possibly will be added in [quick-settings-tweaks](https://github.com/qwreey75/quick-settings-tweaks))
 

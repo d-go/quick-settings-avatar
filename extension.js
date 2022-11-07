@@ -1,12 +1,12 @@
-const { AccountsService, Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
-const { Avatar, UserWidget } = imports.ui.userWidget;
+const { AccountsService, Clutter, GLib, GObject, Shell, St } = imports.gi;
+const { Avatar } = imports.ui.userWidget;
 const Main = imports.ui.main;
-
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
 
 const { QuickSettingsItem, SystemIndicator } = imports.ui.quickSettings;
 const QuickSettingsMenu = Main.panel.statusArea.quickSettings;
+
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
 
 const AvatarItem = GObject.registerClass(
     class AvatarItem extends QuickSettingsItem {
@@ -19,7 +19,7 @@ const AvatarItem = GObject.registerClass(
             const userManager = AccountsService.UserManager.get_default();
             const user = userManager.get_user(GLib.get_user_name());
 
-            // Create the avatar thumbnil based onthe userWidget Avatar
+            // Create the avatar thumbnail based on the userWidget Avatar
             const avatar = new Avatar(user, {
                 iconSize: 36,
                 styleClass: 'user-icon avatar-thumbnail',
@@ -86,7 +86,7 @@ const Indicator = GObject.registerClass(
             //     log(`item: ${item.get_children()}`);
             // });
 
-            // If setting to show it on left is disabled add the avatar on the right
+            // If setting to show it on left is disabled, add the avatar on the right
             if (!this.settings.isAvatarOnLeft) {
                 this.systemItemsBox.add_child(this._systemItem);
                 return;

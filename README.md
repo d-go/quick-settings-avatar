@@ -15,11 +15,14 @@ You can choose the placement of the avatar to be either in the right side of the
 |--|--|
 |<img src="images/avatar-quick-settings-light.png" alt="QuickSettings-Avatar Left">|<img src="images/avatar-quick-settings-light-right.png" alt="QuickSettings-Avatar Right">|
 
+Clicking on it, will open the User settings.
+
 ## Notes
 I have only tested it in laptop devices, mobile and desktop might present some visual issues, install it at your own risk.
 
 ## TODO
 
+- [ ] Add support show a submenu with user related actions, such as "Log out", "Switch user", "Lock screen"(?)
 - [ ] Add support to make the Avatar thumbnail larger
 - [ ] Add options to remove system settings toggles to better adapt it to the available space (possibly will be added in [quick-settings-tweaks](https://github.com/qwreey75/quick-settings-tweaks))
 

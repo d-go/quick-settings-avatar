@@ -26,6 +26,7 @@ const AvatarItem = GObject.registerClass(
             });
 
             this.set_child(avatar);
+            this.set_y_align(Clutter.ActorAlign.CENTER);
 
             this._settingsApp = Shell.AppSystem.get_default().lookup_app(
                 'gnome-user-accounts-panel.desktop');

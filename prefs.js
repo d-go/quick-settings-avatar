@@ -21,7 +21,7 @@ function fillPreferencesWindow(window) {
         const row = new Adw.ActionRow({ title: settingTitle });
         group.add(row);
 
-        // Create the switch and bind its value to the `show-indicator` key
+        // Create the switch and bind its value to the parametrized key
         const toggle = new Gtk.Switch({
             active: settings.get_boolean(settingId),
             valign: Gtk.Align.CENTER,

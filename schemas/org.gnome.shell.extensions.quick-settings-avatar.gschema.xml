@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
   <schema id="org.gnome.shell.extensions.quick-settings-avatar" path="/org/gnome/shell/extensions/quick-settings-avatar/">
-    <key name="is-avatar-on-left" type="b">
+    <key name="avatar-mode" type="i">
+      <!-- 0: Minimal, 1: Pop up-->
+      <default>1</default>
+    </key>
+    <key name="avatar-position" type="i">
+      <!-- 0: right, 1: left -->
+      <default>0</default>
+    </key>
+    <key name="avatar-size" type="i">
+      <default>43</default>
+    </key>
+    <key name="avatar-realname" type="b">
+      <default>false</default>
+    </key>
+    <key name="avatar-username" type="b">
+      <default>false</default>
+    </key>
+    <key name="avatar-hostname" type="b">
+      <default>false</default>
+    </key>
+    <key name="avatar-nobackground" type="b">
       <default>true</default>
     </key>
   </schema>

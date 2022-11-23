@@ -1,11 +1,23 @@
-.avatar-thumbnail {
-  border: none;
-  /* icon-size: 40px; */
+.avatar-picture {
+  border-radius: 99px;
+  border: 2px solid transparent;
 }
 
 .avatar-button {
-  width: 37px;
-  height: 37px;
+  width: auto;
+  height: auto;
   padding: 0px;
 }
 
+.avatar-button.no-bg {
+  background-color: transparent;
+}
+
+.avatar-realname-label, .avatar-username-label {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.avatar-username-label.with-real-name {
+  color: #999;
+}

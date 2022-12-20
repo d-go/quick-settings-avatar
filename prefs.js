@@ -87,6 +87,7 @@ function fillPreferencesWindow(window) {
         settings,
         settingId: SETTINGS.SIZE
     });
+    sizeControl.slider.add_mark(43, Gtk.PositionType.BOTTOM, null);
 
     const realName = createSwitch({
         title: 'Show real name',

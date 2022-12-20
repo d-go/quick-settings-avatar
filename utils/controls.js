@@ -50,7 +50,7 @@ function createSlider({ title, subtitle = '', min = 1, max = 100, step = 1, sett
 
     const slider = new Gtk.Scale({
         digits: 0,
-        adjustment: new Gtk.Adjustment({lower: min, upper: max, stepIncrement: step }),
+        adjustment: new Gtk.Adjustment({ lower: min, upper: max, stepIncrement: step }),
         value_pos: Gtk.PositionType.RIGHT,
         hexpand: true,
         halign: Gtk.Align.END

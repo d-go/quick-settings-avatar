@@ -24,11 +24,6 @@ https://gitlab.gnome.org/Teams/Design/os-mockups/-/blob/master/system-status/qui
 ## Notes
 I have only tested it on laptop devices, mobile and desktop might present some visual issues, install it at your own risk.
 
-## TODO
-
-- [ ] Add support to show a submenu with user related actions, such as "Log out", "Switch user", "Lock screen"(?)
-- [ ] Add support to make the Avatar thumbnail larger
-- [ ] Add options to remove system settings toggles to better adapt it to the available space (possibly will be added in [quick-settings-tweaks](https://github.com/qwreey75/quick-settings-tweaks))
 
 ## License
 This program is distributed under the terms of the GNU General Public License, version 3 or later.

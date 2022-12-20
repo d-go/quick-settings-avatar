@@ -26,12 +26,6 @@ function fillPreferencesWindow(window) {
     // Create the preferences page
     const page = new Adw.PreferencesPage();
 
-    // TODO: Future implementation
-    // Behavior Mode group
-    // const modeGroup = new Adw.PreferencesGroup();
-    // modeGroup.set_title('Behavior Mode');
-    // page.add(modeGroup);
-
     const minimalOpt = createRadio({
         title: 'Minimal',
         subtitle: 'Opens the Users settings on click',
@@ -47,9 +41,6 @@ function fillPreferencesWindow(window) {
         settingId: SETTINGS.MODE,
         group: minimalOpt.radio
     });
-
-    // modeGroup.add(minimalOpt.row);
-    // modeGroup.add(popupOpt.row);
 
     // Position group
     const positionGroup = new Adw.PreferencesGroup();

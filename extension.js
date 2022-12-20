@@ -48,11 +48,12 @@ const AvatarItem = GObject.registerClass(
             this.set_child(this._container);
 
             // Avatar picture
+            const iconSize = settings.avatarSize % 2 === 0 ? settings.avatarSize + 1 : settings.avatarSize;
             this._avatarPicture = new Avatar(this._user, {
-                iconSize: settings.avatarSize,
+                iconSize,
                 styleClass: 'avatar-picture',
             });
-            this._avatarPicture.style = `icon-size: ${settings.avatarSize}px;`;
+            this._avatarPicture.style = `icon-size: ${iconSize}px;`;
 
 
             // Avatar real name label
@@ -101,14 +102,8 @@ const AvatarItem = GObject.registerClass(
             }
 
             this._bindModeActions();
-            // if (settings.avatarMode === 0) {
-            //     this._bindMinimalActions();
-            // }
-            // else {
-            //     this._bindPopupActions();
-            // }
 
-            // Liste to changes when avatar pic or real name is changed via settings
+            // Listen to changes when avatar pic or real name is changed via settings
             this._user.connectObject('changed', this._updateAvatar.bind(this), this);
         }
 
@@ -135,28 +130,6 @@ const AvatarItem = GObject.registerClass(
                 this._settingsApp.activate();
             });
         }
-
-
-        // _bindPopupActions() {
-        //     this._systemActions = new SystemActions.getDefault();
-
-        //     this.menu.setHeader('system-shutdown-symbolic', GLib.get_real_name());
-        //     this._addUserAction('Log Out…', 'can-logout', this._systemActions.activateLogout);
-        //     this._addUserAction('Switch User…', 'can-switch-user', this._systemActions.activateSwitchUser);
-        //     this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        //     this.menu.addSettingsAction('User settings', 'gnome-user-accounts-panel.desktop');
-
-        //     this.connect('clicked', () => this.menu.open());
-        //     this.connect('popup-menu', () => this.menu.open());
-        // }
-
-        // _addUserAction(label, propName, callback) {
-        //     const item = this.menu.addAction(label, () => {
-        //         callback();
-        //         Main.panel.closeQuickSettings();
-        //     });
-        //     this._systemActions.bind_property(propName, item, 'visible', GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE);
-        // }
     }
 );
 
@@ -170,21 +143,35 @@ const Indicator = GObject.registerClass(
         }
 
         _load() {
-            this._indicator = this._addIndicator();
             this._avatarItem = new AvatarItem(this.settings);
 
             // Container of the system toggles
             this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[1].get_children()[0];
 
             const tmpSystemItems = [];
-            const tmpSystemItemsvisible = [];
-            const tmpSystemItemsAlign = [];
             this.systemItemsBox.get_children().forEach(item => {
-                //log(`[QSA] Found following toggles: ${item.constructor?.name}`);
-                tmpSystemItems.push(item);
-                tmpSystemItemsvisible.push(item.visible);
-                tmpSystemItemsAlign.push(item.get_y_align());
+                tmpSystemItems.push({ item, isVisible: item.visible, yAlign: item.get_y_align() });
+            });
 
+            this.systemItemsBox.remove_all_children();
+            // 0: right, 1: left
+            if (this.settings.avatarPosition === 0) {
+                this._addSystemItems(tmpSystemItems);
+                this.systemItemsBox.add_child(this._avatarItem);
+            } else {
+                this.systemItemsBox.add_child(this._avatarItem);
+                this._addSystemItems(tmpSystemItems);
+            }
+
+            // Destroy the avatar toggle on plugin deactivation
+            this.connect('destroy', () => {
+                this._avatarItem.destroy();
+            });
+        }
+
+        _addSystemItems(items) {
+            items.forEach(({ item, isVisible }) => {
+                item.visible = isVisible;
                 // Remove the Y axis expansion on current buttons
                 item.set_y_align(Clutter.ActorAlign.CENTER);
                 // Battery/Power button doesn't have a fixed height,
@@ -192,30 +179,7 @@ const Indicator = GObject.registerClass(
                 if (item.constructor?.name === 'PowerToggle') {
                     item.set_style('height: 41px;');
                 }
-            });
-
-            // On destroy event, destroy the avatar toggle and reset the system toggles to their default state
-            this.connect('destroy', () => {
-                this._avatarItem.destroy();
-                this.systemItemsBox.get_children().forEach((item, i) => {
-                    item.visible = tmpSystemItemsvisible[i];
-                    item.set_y_align(tmpSystemItemsAlign[i]);
-                });
-            });
-
-            // 0: right, 1: left
-            if (this.settings.avatarPosition === 0) {
-                this.systemItemsBox.add_child(this._avatarItem);
-                return;
-            }
-
-            // If aligned to left, remove system toggles and re-add them after insertion of avatar menu
-            this.systemItemsBox.remove_all_children();
-            this.systemItemsBox.add_child(this._avatarItem);
-
-            tmpSystemItems.forEach((item, i) => {
                 this.systemItemsBox.add_child(item);
-                item.visible = tmpSystemItemsvisible[i];
             });
         }
     });

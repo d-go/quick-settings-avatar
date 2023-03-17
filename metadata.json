@@ -3,7 +3,8 @@
   "description": "Display the user avatar in the Quick Settings menu, part of the \"System\" settings",
   "name": "User Avatar In Quick Settings",
   "shell-version": [
-    "43"
+    "43",
+    "44"
   ],
   "url": "https://github.com/d-go/quick-settings-avatar",
   "uuid": "quick-settings-avatar@d-go",

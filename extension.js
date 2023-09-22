@@ -152,7 +152,6 @@ const Indicator = GObject.registerClass(
             } else {
                 const interval = setInterval(() => {
                     this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[0].get_children()[0];
-                    console.log(`[QSA] quick actions: ${this.systemItemsBox}`);
                     if (this.systemItemsBox) {
                         clearInterval(interval);
                         this._addAvatar();

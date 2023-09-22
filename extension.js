@@ -1,16 +1,15 @@
-const { AccountsService, Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
-const { Avatar, UserWidgetLabel } = imports.ui.userWidget;
-const PopupMenu = imports.ui.popupMenu;
-const Main = imports.ui.main;
-const { QuickSettingsItem, SystemIndicator } = imports.ui.quickSettings;
+import AccountsService from 'gi://AccountsService';
+import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
+import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+import { Avatar } from 'resource:///org/gnome/shell/ui/userWidget.js';
+import { QuickSettingsItem, SystemIndicator } from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+
 const QuickSettingsMenu = Main.panel.statusArea.quickSettings;
-
-const SystemActions = imports.misc.systemActions;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-
-
-
 const SETTINGS = [
     'avatar-mode',
     'avatar-position',
@@ -146,8 +145,28 @@ const Indicator = GObject.registerClass(
             this._avatarItem = new AvatarItem(this.settings);
 
             // Container of the system toggles
-            this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[1].get_children()[0];
+            this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[0].get_children()[0];
 
+            if (this.systemItemsBox) {
+                this._addAvatar();
+            } else {
+                const interval = setInterval(() => {
+                    this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[0].get_children()[0];
+                    console.log(`[QSA] quick actions: ${this.systemItemsBox}`);
+                    if (this.systemItemsBox) {
+                        clearInterval(interval);
+                        this._addAvatar();
+                    }
+                }, 1000);
+            }
+
+            // Destroy the avatar toggle on plugin deactivation
+            this.connect('destroy', () => {
+                this._avatarItem.destroy();
+            });
+        }
+
+        _addAvatar() {
             const tmpSystemItems = [];
             this.systemItemsBox.get_children().forEach(item => {
                 tmpSystemItems.push({ item, isVisible: item.visible, yAlign: item.get_y_align() });
@@ -162,11 +181,6 @@ const Indicator = GObject.registerClass(
                 this.systemItemsBox.add_child(this._avatarItem);
                 this._addSystemItems(tmpSystemItems);
             }
-
-            // Destroy the avatar toggle on plugin deactivation
-            this.connect('destroy', () => {
-                this._avatarItem.destroy();
-            });
         }
 
         _addSystemItems(items) {
@@ -185,14 +199,10 @@ const Indicator = GObject.registerClass(
     });
 
 
-class Extension {
-    constructor() {
-        this._indicator = null;
-    }
-
+export default class QSAvatar extends Extension {
     enable() {
-        log(`[QSA] Enabling ${Me.metadata.name}`);
-        this.settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.quick-settings-avatar');
+        console.log(`[QSA] Enabling extension`);
+        this.settings = this.getSettings('org.gnome.shell.extensions.quick-settings-avatar');
         this.handlerIds = SETTINGS.map(setting => (
             this.settings.connect(`changed::${setting}`, () => {
                 this.disable();
@@ -204,7 +214,7 @@ class Extension {
     }
 
     disable() {
-        log(`[QSA] Disabling ${Me.metadata.name}`);
+        console.log(`[QSA] Disabling extension`);
         this.handlerIds.forEach((handler) => this.settings.disconnect(handler));
         this._indicator.destroy();
 
@@ -223,9 +233,4 @@ class Extension {
             avatarNoBackground: this.settings.get_boolean('avatar-nobackground'),
         }
     }
-}
-
-
-function init() {
-    return new Extension();
 }

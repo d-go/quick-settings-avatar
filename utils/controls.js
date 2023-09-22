@@ -1,9 +1,9 @@
-'use strict';
+import Adw from 'gi://Adw';
+import Gio from 'gi://Gio';
+import Gtk from 'gi://Gtk';
 
-const { Adw, Gio, Gtk } = imports.gi;
 
-
-function createSwitch({ title, subtitle = '', settings, settingId }) {
+export function createSwitch({ title, subtitle = '', settings, settingId }) {
     const row = new Adw.ActionRow({ title });
     row.set_subtitle(subtitle);
 
@@ -25,7 +25,7 @@ function createSwitch({ title, subtitle = '', settings, settingId }) {
     return { row, toggle };
 }
 
-function createRadio({ title, subtitle = '', value, group = null, settings, settingId }) {
+export function createRadio({ title, subtitle = '', value, group = null, settings, settingId }) {
     const row = new Adw.ActionRow({ title });
     row.set_subtitle(subtitle);
 
@@ -44,7 +44,7 @@ function createRadio({ title, subtitle = '', value, group = null, settings, sett
     return { row, radio };
 }
 
-function createSlider({ title, subtitle = '', min = 1, max = 100, step = 1, settings, settingId }) {
+export function createSlider({ title, subtitle = '', min = 1, max = 100, step = 1, settings, settingId }) {
     const row = new Adw.ActionRow({ title });
     row.set_subtitle(subtitle);
 

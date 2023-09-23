@@ -1,7 +1,7 @@
 # Quick Settings Avatar
 <img src="images/avatar-quick-settings-dark.png" style="margin:0 auto;" width="300px" alt="QuickSettings-Avatar">
 
-Quick Settings Avatar is a Gnome 43+ extension that simply adds your user avatar to the Quick Settings panel, next to the system related settings (either in the right or the left side).
+Quick Settings Avatar is a Gnome 43+ extension that simply adds your user avatar to the Quick Settings panel, next to the system related settings (either on the right or the left side).
 Inspired by the early Gnome mocks for the quick settings panel:
 https://gitlab.gnome.org/Teams/Design/os-mockups/-/blob/master/system-status/quick-settings/quick-toggles-2.png
 
@@ -11,7 +11,7 @@ https://gitlab.gnome.org/Teams/Design/os-mockups/-/blob/master/system-status/qui
 
 ## Features
 
-* You can choose the placement of the avatar to be either in the right side or the left one:
+* You can choose the placement of the avatar to be either on the right or the left side of the panel:
 
 |Left side|Right side|
 |--|--|
@@ -19,7 +19,7 @@ https://gitlab.gnome.org/Teams/Design/os-mockups/-/blob/master/system-status/qui
 
 * Ability to re-size the avatar picture.
 * Display your name, username and/or hostname next to the avatar picture.
-* Clicking on it, will open the User settings.
+* Clicking on the avatar will open the User settings.
 
 ## Notes
 I have only tested it on laptop devices, mobile and desktop might present some visual issues, install it at your own risk.

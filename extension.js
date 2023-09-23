@@ -19,6 +19,7 @@ const SETTINGS = [
     'avatar-hostname',
     'avatar-nobackground',
 ];
+let intervalId = null;
 
 const AvatarItem = GObject.registerClass(
     class AvatarItem extends QuickSettingsItem {
@@ -150,11 +151,20 @@ const Indicator = GObject.registerClass(
             if (this.systemItemsBox) {
                 this._addAvatar();
             } else {
-                const interval = setInterval(() => {
+                let retries = 0;
+                intervalId = setInterval(() => {
+                    if (retries === 3) {
+                        clearInterval(intervalId);
+                        console.log('[QSA] Could not find system actions');
+                        return;
+                    }
+
                     this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[0].get_children()[0];
                     if (this.systemItemsBox) {
-                        clearInterval(interval);
+                        clearInterval(intervalId);
                         this._addAvatar();
+                    } else {
+                        retries++;
                     }
                 }, 1000);
             }
@@ -217,8 +227,13 @@ export default class QSAvatar extends Extension {
         this.handlerIds.forEach((handler) => this.settings.disconnect(handler));
         this._indicator.destroy();
 
+        this.settings = null;
         this.handlerIds = null;
         this._indicator = null;
+
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
     }
 
     _mapSettings() {

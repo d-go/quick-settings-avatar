@@ -8,8 +8,10 @@ import { Avatar } from 'resource:///org/gnome/shell/ui/userWidget.js';
 import { QuickSettingsItem, SystemIndicator } from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { PACKAGE_VERSION } from 'resource:///org/gnome/shell/misc/config.js';
 
 const QuickSettingsMenu = Main.panel.statusArea.quickSettings;
+const [major, minor] = PACKAGE_VERSION.split('.').map(v => Number(v));
 const SETTINGS = [
     'avatar-mode',
     'avatar-position',
@@ -19,7 +21,7 @@ const SETTINGS = [
     'avatar-hostname',
     'avatar-nobackground',
 ];
-let intervalId = null;
+let sourceId = null;
 
 const AvatarItem = GObject.registerClass(
     class AvatarItem extends QuickSettingsItem {
@@ -114,11 +116,14 @@ const AvatarItem = GObject.registerClass(
         }
 
         _bindModeActions() {
-            this._settingsApp = Shell.AppSystem.get_default().lookup_app(
-                'gnome-user-accounts-panel.desktop');
+            let userSettings = 'gnome-user-accounts-panel.desktop';
+            if (major >= 46) {
+                userSettings = 'gnome-users-panel.desktop';
+            }
+            this._settingsApp = Shell.AppSystem.get_default().lookup_app(userSettings);
 
             if (!this._settingsApp) {
-                log('Missing users settings core component, expect trouble…');
+                console.log('Missing users settings core component, expect trouble…');
             }
 
             this.accessible_name = this._settingsApp?.get_name() ?? null;
@@ -146,27 +151,10 @@ const Indicator = GObject.registerClass(
             this._avatarItem = new AvatarItem(this.settings);
 
             // Container of the system toggles
-            this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[0].get_children()[0];
+            this.systemItemsBox = QuickSettingsMenu._system._systemItem.child;
 
             if (this.systemItemsBox) {
                 this._addAvatar();
-            } else {
-                let retries = 0;
-                intervalId = setInterval(() => {
-                    if (retries === 3) {
-                        clearInterval(intervalId);
-                        console.log('[QSA] Could not find system actions');
-                        return;
-                    }
-
-                    this.systemItemsBox = QuickSettingsMenu.menu._grid.get_children()[0].get_children()[0];
-                    if (this.systemItemsBox) {
-                        clearInterval(intervalId);
-                        this._addAvatar();
-                    } else {
-                        retries++;
-                    }
-                }, 1000);
             }
 
             // Destroy the avatar toggle on plugin deactivation
@@ -219,7 +207,17 @@ export default class QSAvatar extends Extension {
             })
         ));
 
-        this._indicator = new Indicator(this._mapSettings());
+        if (QuickSettingsMenu._system) {
+            this._indicator = new Indicator(this._mapSettings());
+        } else {
+            sourceId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+                if (!QuickSettingsMenu._system)
+                    return GLib.SOURCE_CONTINUE;
+
+                this._indicator = new Indicator(this._mapSettings());
+                return GLib.SOURCE_REMOVE;
+            });
+        }
     }
 
     disable() {
@@ -231,8 +229,9 @@ export default class QSAvatar extends Extension {
         this.handlerIds = null;
         this._indicator = null;
 
-        if (intervalId) {
-            clearInterval(intervalId);
+        if (sourceId) {
+            GLib.Source.remove(sourceId);
+            sourceId = null;
         }
     }
 

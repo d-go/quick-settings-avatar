@@ -6,7 +6,7 @@
 .avatar-button {
   width: auto;
   height: auto;
-  padding: 0px;
+  padding: 0px !important;
 }
 
 .avatar-button.no-bg {

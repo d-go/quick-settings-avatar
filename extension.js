@@ -43,7 +43,7 @@ const AvatarItem = GObject.registerClass(
                 style_class: 'avatar-name-box',
                 y_align: Clutter.ActorAlign.CENTER,
                 x_align: Clutter.ActorAlign.CENTER,
-                vertical: false,
+                orientation: Clutter.Orientation.VERTICAL
             });
 
             this.set_y_align(Clutter.ActorAlign.CENTER);
@@ -81,7 +81,7 @@ const AvatarItem = GObject.registerClass(
             const labelsContainer = new St.BoxLayout({
                 style_class: 'avatar-labels-box',
                 y_align: Clutter.ActorAlign.CENTER,
-                vertical: true,
+                orientation: Clutter.Orientation.VERTICAL
             });
 
             if (avatarRealname) {
